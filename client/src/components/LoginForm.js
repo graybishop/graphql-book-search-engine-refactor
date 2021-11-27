@@ -16,54 +16,7 @@ const LoginForm = () => {
     setUserFormData({ ...userFormData, [name]: value });
   };
 
-  // const {data, loading} = useQuery( gql`
-  //   query Users {
-  //     users {
-  //       _id
-  //       username
-  //       email
-  //       bookCount
-  //       savedBooks {
-  //         bookId
-  //         authors
-  //         title
-  //         description
-  //         image
-  //         link
-  //       }
-  //     }
-  //   }
-  //   `
-  // )
-
-  // console.log('usequeryresult:', data)
-
   const [login] = useMutation(LOGIN_USER);
-
-  const [testMutation] = useMutation(gql`
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        _id
-        username
-      }
-    }
-  }
-`);
-
-  const testMute = async () => {
-    let something = await testMutation({
-      variables: {
-        "username": "test",
-        "email": "test@test.com",
-        "password": "password"
-      }
-    });
-    console.log(something);
-  };
-
-  // testMute()
 
   const handleFormSubmit = async (event) => {
     event.preventDefault();
@@ -76,14 +29,7 @@ const LoginForm = () => {
     }
 
     try {
-      console.log('submitting with', userFormData);
-      const anything = login({ variables: userFormData });
-      await anything;
-      console.log(anything);
-      let newdata = { ...anything };
-      console.log(newdata);
-      let { user, token } = anything;
-      console.log(token, user);
+      const {data:{login:{user, token}}} = await login({ variables: userFormData });
       console.log(user);
       Auth.login(token);
     } catch (err) {

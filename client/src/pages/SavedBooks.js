@@ -8,17 +8,10 @@ import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
-  // const [userData, setUserData] = useState({});
-
   // use this to determine if `useEffect()` hook needs to run again
   // const userDataLength = Object.keys(userData).length;
 
   const {data, loading, error} = useQuery(QUERY_ME)
-
-  const userData = data || {}
-
-  console.log(error)
-  console.log(userData)
 
   // setUserData(data)
 
@@ -75,6 +68,8 @@ const SavedBooks = () => {
   if (loading) {
     return <h2>LOADING...</h2>;
   }
+
+  let userData = data.me
 
   return (
     <>
