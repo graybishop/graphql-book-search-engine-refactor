@@ -8,12 +8,47 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
+  gql
 } from "@apollo/client";
+import { LOGIN_USER } from './utils/mutations.js';
 
 const client = new ApolloClient({
   uri: '/graphql',
   cache: new InMemoryCache()
 });
+
+client.query(
+  {
+    query: gql`
+    query Users {
+      users {
+        _id
+        username
+        email
+        bookCount
+        savedBooks {
+          bookId
+          authors
+          title
+          description
+          image
+          link
+        }
+      }
+    }
+    `
+  }
+).then(result => console.log(result));
+
+client.mutate(
+  {
+    mutation: LOGIN_USER
+    , variables: {
+      "username": "test",
+      "email": "test@test.com",
+      "password": "password"
+    }
+  }).then(result => console.log(result));
 
 function App() {
   return (
